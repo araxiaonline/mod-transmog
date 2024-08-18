@@ -443,7 +443,8 @@ public:
                     CharacterDatabase.CommitTransaction(trans);
                 }
                 else
-                    ChatHandler(session).SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
+                    session->SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
+
                 OnGossipHello(player, creature);
             } break;
             case EQUIPMENT_SLOT_END + 3: // Remove Transmogrification from single item
@@ -456,7 +457,7 @@ public:
                         session->SendAreaTriggerMessage("%s", GTS(LANG_ERR_UNTRANSMOG_OK));
                     }
                     else
-                        ChatHandler(session).SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
+                        session->SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
                 }
                 OnGossipSelect(player, creature, EQUIPMENT_SLOT_END, action);
             } break;
@@ -583,7 +584,7 @@ public:
                     if (res == LANG_ERR_TRANSMOG_OK)
                         session->SendAreaTriggerMessage("%s",GTS(LANG_ERR_TRANSMOG_OK));
                     else
-                        ChatHandler(session).SendNotification(res);
+                       session->SendNotification(res);
                 }
                 else
                 {
@@ -591,7 +592,7 @@ public:
                     if (res == LANG_ERR_TRANSMOG_OK)
                         session->SendAreaTriggerMessage("%s",GTS(LANG_ERR_TRANSMOG_OK));
                     else
-                        ChatHandler(session).SendNotification(res);
+                        session->SendNotification(res);
                 }
                 // OnGossipSelect(player, creature, EQUIPMENT_SLOT_END, sender);
                 // ShowTransmogItems(player, creature, sender);
@@ -625,7 +626,7 @@ public:
         }
         std::string name(code);
         if (name.find('"') != std::string::npos || name.find('\\') != std::string::npos)
-            ChatHandler(player->GetSession()).SendNotification(LANG_PRESET_ERR_INVALID_NAME);
+            player->GetSession()->SendNotification(LANG_PRESET_ERR_INVALID_NAME);
         else
         {
             for (uint8 presetID = 0; presetID < sT->GetMaxSets(); ++presetID) // should never reach over max
@@ -662,7 +663,7 @@ public:
                 cost += sT->GetSetCopperCost();
                 if (!player->HasEnoughMoney(cost))
                 {
-                    ChatHandler(player->GetSession()).SendNotification(LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY);
+                    player->GetSession()->SendNotification(LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY);
                     break;
                 }
 
