@@ -1,8 +1,19 @@
-# Transmog Module
+# ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore
 
-- Latest Transmog build status with azerothcore: [![Build Status](https://github.com/azerothcore/mod-transmog/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-transmog)
+## mod-transmog
 
-This is a module for [AzerothCore](http://www.azerothcore.org) that adds transmog feature, it's based on [Rochet2 Transmog Script](http://rochet2.github.io/Transmogrification.html) 
+![Latest Release](https://img.shields.io/github/v/release/araxiaonline/mod-transmog?label=current%20version)
+![GitHub Release Date](https://img.shields.io/github/release-date/araxiaonline/mod-transmog)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/araxiaonline/mod-transmog/build-release.yml?branch=araxia-main&event=push&label=build%20status)
+
+<p align="left">
+  <img src="https://github.com/araxiaonline/docs/blob/main/docs/media/logo-sm.png?raw=true" alt="Araxia Online" width="70" style="vertical-align: middle;"/>
+  <span style="font-size: 20px; vertical-align: middle;">Player Tested By Araxia Online</span>
+</p>
+
+### Description
+
+This is a module for [AzerothCore](http://www.azerothcore.org) that adds transmog feature, it's based on [Rochet2 Transmog Script](http://rochet2.github.io/Transmogrification.html)
 
 ## Important notes
 
