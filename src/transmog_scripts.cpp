@@ -438,14 +438,16 @@ void PerformTransmogrification (Player* player, uint32 itemEntry, uint32 cost)
     WorldSession* session = player->GetSession();
     if (!player->HasEnoughMoney(cost))
     {
-        ChatHandler(session).SendNotification(LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY);
+        // ChatHandler(session).SendNotification(LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY);
+        session->SendNotification(LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY);
         return;
     }
     TransmogAcoreStrings res = sT->Transmogrify(player, itemEntry, slot);
     if (res == LANG_ERR_TRANSMOG_OK)
         session->SendAreaTriggerMessage("%s",GTS(LANG_ERR_TRANSMOG_OK));
     else
-        ChatHandler(session).SendNotification(res);
+        // ChatHandler(session).SendNotification(res);
+        session->SendNotification(res);
 }
 
 void RemoveTransmogrification (Player* player)
@@ -460,7 +462,8 @@ void RemoveTransmogrification (Player* player)
             session->SendAreaTriggerMessage("%s", GTS(LANG_ERR_UNTRANSMOG_OK));
         }
         else
-            ChatHandler(session).SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
+            // ChatHandler(session).SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
+            session->SendNotification(LANG_ERR_UNTRANSMOG_NO_TRANSMOGS);
     }
 }
 
@@ -948,7 +951,8 @@ public:
         Item* targetItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
         if (!targetItem)
         {
-            ChatHandler(player->GetSession()).SendNotification(LANG_ERR_TRANSMOG_MISSING_DEST_ITEM);
+            // ChatHandler(player->GetSession()).SendNotification(LANG_ERR_TRANSMOG_MISSING_DEST_ITEM);
+            player->GetSession()->SendNotification(LANG_ERR_TRANSMOG_MISSING_DEST_ITEM);
             CloseGossipMenuFor(player);
             return;
         }
