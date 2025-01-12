@@ -488,7 +488,7 @@ public:
                 }
             }
 
-            return sTransmogrification->IsEnabled() && (target && !target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value);
+            return sTransmogrification->IsEnabled() && (target && !target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).IsEnabled());
         }
     };
 
@@ -541,13 +541,20 @@ public:
         switch (sender)
         {
             case EQUIPMENT_SLOT_END: // Show items you can use
+            {
                 sT->selectionCache[player->GetGUID()] = action;
 
+                bool useVendorInterface = player->GetPlayerSetting("mod-transmog", SETTING_VENDOR_INTERFACE).IsEnabled();
+
                 if (sT->GetUseVendorInterface())
-                    ShowTransmogItemsInFakeVendor(player, creature, action);
-                else
+                    useVendorInterface ? ShowTransmogItemsInFakeVendor(player, creature, action) :
                     ShowTransmogItemsInGossipMenu(player, creature, action, sender);
+                else
+                    useVendorInterface ? ShowTransmogItemsInGossipMenu(player, creature, action, sender) :
+                    ShowTransmogItemsInFakeVendor(player, creature, action);
+
                 break;
+            }
             case EQUIPMENT_SLOT_END + 1: // Main menu
                 OnGossipHello(player, creature);
                 break;
@@ -1161,9 +1168,7 @@ public:
                 accountId = player->GetSession()->GetAccountId();
 
             QueryResult resultAcc = LoginDatabase.Query("SELECT `membership_level`  FROM `acore_cms_subscriptions` WHERE `account_name` COLLATE utf8mb4_general_ci = (SELECT `username` FROM `account` WHERE `id` = {})", accountId);
-
-            if (resultAcc)
-                player->UpdatePlayerSetting("acore_cms_subscriptions", SETTING_TRANSMOG_MEMBERSHIP_LEVEL, (*resultAcc)[0].Get<uint32>());
+            player->UpdatePlayerSetting("acore_cms_subscriptions", SETTING_TRANSMOG_MEMBERSHIP_LEVEL, resultAcc ? (*resultAcc)[0].Get<uint32>() : 0);
         }
 
 #ifdef PRESETS
