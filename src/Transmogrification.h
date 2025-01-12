@@ -27,8 +27,12 @@ struct ItemTemplate;
 
 enum TransmogSettings
 {
-    SETTING_HIDE_TRANSMOG = 0,
-    SETTING_RETROACTIVE_CHECK = 1
+    SETTING_HIDE_TRANSMOG             = 0,
+    SETTING_RETROACTIVE_CHECK         = 1,
+    SETTING_VENDOR_INTERFACE          = 2,
+
+    // Subscriptions
+    SETTING_TRANSMOG_MEMBERSHIP_LEVEL = 0
 };
 
 enum MixedWeaponSettings
@@ -61,6 +65,8 @@ enum TransmogAcoreStrings // Language.h might have same entries, appears when ex
     LANG_CMD_TRANSMOG_ADD_FORBIDDEN = 11114,
     LANG_CMD_TRANSMOG_BEGIN_SYNC = 11115,
     LANG_CMD_TRANSMOG_COMPLETE_SYNC = 11116,
+    LANG_CMD_TRANSMOG_VENDOR_INTERFACE_ENABLE = 11117,
+    LANG_CMD_TRANSMOG_VENDOR_INTERFACE_DISABLE = 11118
 };
 
 enum ArmorClassSpellIDs
@@ -95,6 +101,8 @@ enum PlusFeatures
     PLUS_FEATURE_SKIP_LEVEL_REQ
 };
 
+const uint32 TMOG_VENDOR_CREATURE_ID = 190010;
+
 class Transmogrification
 {
 public:
@@ -106,10 +114,13 @@ public:
     typedef std::unordered_map<uint32, std::vector<uint32>> collectionCacheMap;
     typedef std::unordered_map<uint32, std::string> searchStringMap;
     typedef std::unordered_map<uint32, std::vector<uint32>> transmogPlusData;
+    typedef std::unordered_map<ObjectGuid, uint8> selectedSlotMap;
+    
     transmogPlusData plusDataMap;
     transmogMap entryMap; // entryMap[pGUID][iGUID] = entry
     transmogData dataMap; // dataMap[iGUID] = pGUID
     collectionCacheMap collectionCache;
+    selectedSlotMap selectionCache;
 
 #ifdef PRESETS
     bool EnableSetInfo;
@@ -130,8 +141,6 @@ public:
     uint8 MaxSets;
     float SetCostModifier;
     int32 SetCopperCost;
-
-    uint32 PetSpellId;
 
     bool GetEnableSets() const;
     uint8 GetMaxSets() const;
@@ -184,7 +193,11 @@ public:
     bool IgnoreReqStats;
 
     bool UseCollectionSystem;
+    bool UseVendorInterface;
+    
     bool AllowHiddenTransmog;
+    bool HiddenTransmogIsFree;
+    
     bool TrackUnusableItems;
     bool RetroActiveAppearances;
     bool ResetRetroActiveAppearances;
@@ -241,7 +254,9 @@ public:
     bool GetAllowTradeable() const;
 
     bool GetUseCollectionSystem() const;
+    bool GetUseVendorInterface() const;
     bool GetAllowHiddenTransmog() const;
+    bool GetHiddenTransmogIsFree() const;
     bool GetTrackUnusableItems() const;
     bool EnableRetroActiveAppearances() const;
     bool EnableResetRetroActiveAppearances() const;
@@ -261,10 +276,12 @@ public:
     // Transmog Plus
     bool IsTransmogPlusEnabled;
     [[nodiscard]] bool IsPlusFeatureEligible(ObjectGuid const& playerGuid, uint32 feature) const;
-    uint32 getPlayerMembershipLevel(ObjectGuid const & playerGuid) const;
-
+    [[nodiscard]] uint32 GetPlayerMembershipLevel(Player* player) const { return player->GetPlayerSetting("acore_cms_subscriptions", SETTING_TRANSMOG_MEMBERSHIP_LEVEL).value; };
     [[nodiscard]] bool IgnoreLevelRequirement(ObjectGuid const& playerGuid) const { return IgnoreReqLevel || IsPlusFeatureEligible(playerGuid, PLUS_FEATURE_SKIP_LEVEL_REQ); }
 
+    uint32 PetSpellId;
+    uint32 PetEntry;
+    [[nodiscard]] bool IsTransmogVendor(uint32 entry) const { return entry == TMOG_VENDOR_CREATURE_ID || entry == PetEntry; };
 };
 #define sTransmogrification Transmogrification::instance()
 
