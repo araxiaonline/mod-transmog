@@ -731,7 +731,9 @@ public:
         }
         std::string name(code);
         if (name.find('"') != std::string::npos || name.find('\\') != std::string::npos)
+        {
             ChatHandler(player->GetSession()).SendNotification(LANG_PRESET_ERR_INVALID_NAME);
+        }
         else
         {
             for (uint8 presetID = 0; presetID < sT->GetMaxSets(); ++presetID) // should never reach over max
