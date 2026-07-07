@@ -11,6 +11,9 @@
   <span style="font-size: 20px; vertical-align: middle;">Player Tested By Araxia Online</span>
 </p>
 
+> [!WARNING]  
+> If you used the old-subscription system for TransmogPlus option before this [commit](https://github.com/azerothcore/mod-transmog/commit/8237df6f88d40d1d83a6f11b86a7187f99f57c99), please update your mod-transmog module to the latest revision and also download the new module [mod-acore-subscriptions](https://github.com/azerothcore/mod-acore-subscriptions).
+
 ### Description
 
 This is a module for [AzerothCore](http://www.azerothcore.org) that adds transmog feature, it's based on [Rochet2 Transmog Script](http://rochet2.github.io/Transmogrification.html)
